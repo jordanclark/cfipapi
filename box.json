@@ -1,0 +1,39 @@
+{
+    "name":"cfipapi",
+    "slug":"cfipapi",
+    "version":"0.0.2",
+    "author":"Jordan Clark <jordanclark@gmail.com>",
+    "keywords":[
+        "ipapi",
+        "geo location",
+        "ip lookup",
+        "api",
+        "rest"
+    ],
+    "shortDescription":"API client for ipapi.co",
+    "type":"modules",
+    "location":"jordanclark/cfipapi#v0.0.2",
+    "repository":{
+        "URL":"https://github.com/jordanclark/cfipapi.git",
+        "type":"GIT"
+    },
+    "homepage":"https://github.com/jordanclark/cfipapi",
+    "bugs":"https://github.com/jordanclark/cfipapi/issues",
+    "license":[
+        {
+            "type":"Apache-2.0",
+            "URL":"https://github.com/jordanclark/cfipapi/blob/master/LICENSE"
+        }
+    ],
+    "private":false,
+    "ignore":[
+        "**/.*",
+        "/test/",
+        "/tests/"
+    ],
+    "scripts":{
+        "postVersion":"package set location='jordanclark/cfipapi#v`package version`'",
+        "onRelease":"publish",
+        "postPublish":"!git push --follow-tags"
+    }
+}
