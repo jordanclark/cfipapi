@@ -2,11 +2,11 @@ component {
 	cfprocessingdirective( preserveCase=true );
 
 	function init(
-		required string apiKey
+		string apiKey= ""
 	,	string apiUrl= "https://ipapi.co"
-	,	numeric throttle= 1000
+	,	numeric throttle= 100
 	,	string userAgent= "ipapi-cfml-api-client/0.1"
-	,	numeric httpTimeOut= 60
+	,	numeric httpTimeOut= 3
 	,	boolean debug= ( request.debug ?: false )
 	) {
 		this.apiUrl= arguments.apiUrl;
@@ -79,7 +79,9 @@ component {
 		}
 		cftimer( type="debug", label="ipapi.co request" ) {
 			cfhttp( result="http", method=out.verb, url=out.requestUrl, throwOnError=false, userAgent=this.userAgent, timeOut=this.httpTimeOut, charset="UTF-8" ) {
-				cfhttpparam( name="key", type="url", value=this.apiKey );
+				if( len( this.apiKey ) ) {
+					cfhttpparam( name="key", type="url", value=this.apiKey );
+				}
 			}
 		}
 		if ( this.throttle > 0 ) {
@@ -101,10 +103,10 @@ component {
 		// parse response 
 		if ( len( out.response ) ) {
 			try {
-				out.response= deserializeJSON( replace( out.response, "null", "'null'", "all" ) );
-				if ( isStruct( out.response ) && structKeyExists( out.response, "error" ) ) {
+				out.response= deserializeJSON( out.response );
+				if ( isStruct( out.response ) && structKeyExists( out.response, "reason" ) ) {
 					out.success= false;
-					out.error= out.response.error;
+					out.error= out.response.reason;
 				}
 			} catch (any cfcatch) {
 				out.error= "JSON Error: " & (cfcatch.message?:"No catch message") & " " & (cfcatch.detail?:"No catch detail");
