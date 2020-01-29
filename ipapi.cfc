@@ -48,6 +48,11 @@ component {
 		return out;
 	}
 
+	struct function quota( string ip= this.getRemoteIp() ) {
+		var out= this.apiRequest( "GET /quota/" );
+		return out;
+	}
+
 	// struct function ipField( required string field, string ip= this.getRemoteIp() ) {
 	// 	var out= this.apiRequest( "GET /#arguments.ip#/#arguments.field#/" );
 	// 	return out;
