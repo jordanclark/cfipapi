@@ -1,5 +1,5 @@
 component {
-	cfprocessingdirective( preserveCase=true );
+	// cfprocessingdirective( preserveCase=true );
 
 	function init(
 		string apiKey= ""
@@ -7,8 +7,9 @@ component {
 	,	numeric throttle= 100
 	,	string userAgent= "ipapi-cfml-api-client/0.1"
 	,	numeric httpTimeOut= 3
-	,	boolean debug= ( request.debug ?: false )
+	,	boolean debug
 	) {
+		arguments.debug = ( arguments.debug ?: request.debug ?: false );
 		this.apiUrl= arguments.apiUrl;
 		this.apiKey= arguments.apiKey;
 		this.userAgent= arguments.userAgent;
@@ -28,7 +29,12 @@ component {
 				request.log( arguments.input );
 			}
 		} else if( this.debug ) {
-			cftrace( text=( isSimpleValue( arguments.input ) ? arguments.input : "" ), var=arguments.input, category="ipapi", type="information" );
+			var info= ( isSimpleValue( arguments.input ) ? arguments.input : serializeJson( arguments.input ) );
+			cftrace(
+				var= "info"
+			,	category= "ipapi"
+			,	type= "information"
+			);
 		}
 		return;
 	}
